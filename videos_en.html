@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Les Tableaux de Jocelyn Leibovici">
+    <meta name="author" content="Leo Leibovici">
+    <link rel="icon" type="image/png" href="img/ico32.png">
+    <title>Paintings by Jocelyn Leibovici</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+    <link rel="stylesheet" href="css/flag-icons.min.css">
+    <!--<style>
+        .img-fluid {
+            max-width:100%;
+            height: auto;
+        }
+    </style>-->
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: darkgreen">
+        <a class="navbar-brand mb-0 h1" href="index_en.html"><img src="img/ico64.png">Paintings by Jocelyn Leibovici</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index_en.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about_en.html.html">About Jocelyn</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right" style="background-color: lightgreen">
+            <li class="dropdown">
+                <a href="#" id="btnlang" class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-expanded="false">Language <span class="flag-icon flag-icon-gb"></span> <span class="caret"></span> </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropdown-item" href="#" onclick="francais();">Fran&ccedil;aise</a> </li>
+                    <li><a class="dropdown-item" href="#" onclick="english();">English</a> </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container" id="content">
+    <div class="row">
+        <div class="col"><h1>&nbsp;</h1></div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h2 id="albumtitle">Videos</h2>
+            <h5 id="albumDescription"></h5>
+        </div>
+        <div class="col-12 text-center">
+            <div id="videorow" class="row"></div>
+        </div>
+    </div>
+
+</div>
+<footer>
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="/">Return to the list of albums</a>
+        </p>
+        <p class="mb-1">&copy; 2022 Jocelyn Leibovici</p>
+        <p class="mb-0"><a href="mailto:contact@jleibovici.fr">contact us</a></p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+<script src="js/cookies.js"></script>
+
+<script>
+    var album;
+
+    $(document).ready(function () {
+        let params = new URLSearchParams(document.location.search.substring(1));
+        album = params.get("album");
+
+        function buildevents() {
+            return function (data) {
+                if (data.length == 0) {
+                    $('#photorow').append("<h6 class='text-center'>No pictures found in album</h6>")
+
+                } else {
+                    descr = data[0]['description_en'];
+                    $('#albumDescription').html(descr);
+                    var picturedata = data[1];
+                    $.each(picturedata, function (index, value) {
+                        let ytid = value['ytid'];
+                        let description = value['description'];
+                        if (description == null) {
+                            description = " ";
+                        }
+                        let filename = value['filename'];
+                        let poster = filename.replace(/mp4/,'jpg');
+                        let descr = description.replace(/\n/g, "<br/>");
+                        let ptext = '<div class="col-12 item align-items-center mt-3">';
+                        //ptext += '<iframe allowfullscreen width="420" height="315"src="https://www.youtube.com/embed/' + ytid + '"></iframe>';
+                        ptext += "<video class='video' width='420' height='315' preload='metadata' controls\n";
+                        ptext += "poster='fetchposter.php?filename=" + poster + "'>\n";
+                        ptext += "<source src='fetchvideo.php?filename="  + filename +"' type='video/mp4'>\n";
+                        ptext += '</video>';
+                        ptext += '<p>' + description + '</p>'
+                        ptext += '</div>' + "\n";
+                        $('#videorow').append(ptext);
+                    });
+                    $('video').on('ended', function() {
+                        $('video').load();
+                    })
+                }
+            };
+        }
+
+
+        if (album == null) {
+            $('#albumtitle').html("No Album requested");
+        } else {
+            $('#albumtitle').html(album);
+
+            $.ajax({
+                url: 'getVideoalbum.php?album=' + album,
+                type: 'GET',
+                dataType: 'json',
+                cache: false
+            })
+                .done(buildevents());
+
+        }
+    });
+
+    function francais() {
+        setCookie("lang","francaise",365);
+        window.location.replace("videos.html?album=" + album);
+    };
+
+    function english() {
+        setCookie("lang","english",365);
+        //window.location.replace("index_en.html");
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="RSC Archive Photos by John Leonard">
+    <meta name="author" content="Leo Leibovici">
+    <link rel="icon" type="image/png" href="/img/ico32.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+    <link rel="stylesheet" href="/summernote/summernote-bs4.min.css">
+    <title>RSC Archive Photos by John Leonard</title>
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: darkolivegreen">
+        <a class="navbar-brand mb-0 h1" href="/"><img src="/img/ico64.png"> TRSC Archive Photos by John Leonard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About the Archive</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">Admin</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container pt-5 mt-5">
+        <h1>&nbsp;</h1>
+        <div id="wrapper">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h4 id="filename"></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+<!--                    <div class="mb-3 border border-dark rounded">
+                        <h5>Modifier la description</h5>
+                        <div class="summernote" id="sumernote">
+                            <p>Example text</p>
+                        </div>
+                        <div class="mb-1">
+                            <button type="button" onclick="registrer();">Enregistrer</button>
+                        </div>
+                    </div>-->
+                    <div class="mb-3 border border-dark rounded">
+                        <h5>Modify the description</h5>
+                        <div class="summernote" id="sumernote_en">
+                            <p>Example text</p>
+                        </div>
+                        <div class="mb-1">
+                            <button type="button" onclick="registrer_en();">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" style="margin-top: auto; margin-bottom: auto">
+                    <div id="thumbnail"></div>
+                    <div class="mt-3">
+                        <button type="button" onclick="picdelete();">Delete the photo</button>
+                    </div>
+                    <div class="mt-5 text-right">
+                        <button type="button" onclick="retour();">Return to the album</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+        integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+        crossorigin="anonymous"></script>
+<script src="/summernote/summernote-bs4.min.js"></script>
+<script src="/summernote/plugin/specialchars/summernote-ext-specialchars.js"></script>
+
+<script>
+    var pidx;
+    var album;
+    $(document).ready(function () {
+        let params = new URLSearchParams(document.location.search.substring(1));
+        pidx = params.get("pictureidx");
+        $.ajax({
+            url: '/getpictureInfo.php?pictureidx=' + pidx,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var description = data['description'];
+                if (description == null) {
+                    description = '';
+                }
+                var description_en = data['description_en'];
+                if (description_en == null) {
+                    description_en = '';
+                }
+                var filename = data['filename'];
+                album = data['album'];
+                $('#filename').html(filename);
+                description = description.replace(/\n/g, '<br>');
+                // $('#sumernote').summernote("code", description);
+                $('#sumernote_en').summernote("code", description_en);
+                var thumblink = "/fetchthumb.php?album=" + album + "&filename=" + filename;
+                var fulllink = "fetchpicraw.php?album=" + album + "&filename=" + filename;
+                $('#thumbnail').html('<a href="' + fulllink + '" download="' + filename + '"><img src="' + thumblink + '"></a>')
+
+            }
+        });
+        $('.summernote').summernote({
+                height: 150,
+                dialogsInBody: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'strikethrough', 'clear']],
+                    ['fontname', ['fontname']], ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['specialchars', 'link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']],
+                ],
+            }
+        );
+    });
+
+    function registrer() {
+        var data = $('#sumernote').summernote('code');
+        $.post('writepicture.php', {data: data, pictureidx: pidx})
+            .done(function () {
+                alert('mise à jour')
+            });
+    };
+
+    function registrer_en() {
+        var data = $('#sumernote_en').summernote('code');
+        $.post('writepicture_en.php', {data: data, pictureidx: pidx})
+            .done(function () {
+                alert('Updated')
+            });
+    };
+
+    function picdelete() {
+        if (confirm('Are you sure you want to delete the picture?')) {
+            $.post('delpicture.php', {album: album, pictureidx: pidx});
+            window.location.href = "editalbums.html?album=" + album;
+        }
+    };
+
+    function retour() {
+        window.location.href = "editalbums.html?album=" + album;
+    }
+</script>
+</body>
+</html>
