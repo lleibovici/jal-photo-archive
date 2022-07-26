@@ -13,38 +13,11 @@ else {
     $loggedin = false;
 }
 $fullpath = $picturebase . $album . '/' . $filename;
-$im = imagecreatefromstring(file_get_contents($fullpath));
-
-$exif = exif_read_data($fullpath);
-if ($exif && !empty($exif['Orientation']))
-{
-    $buffer = $im;
-    switch($exif['Orientation']) {
-        case 8:
-            $buffer = imagerotate($im, 90, 0);
-            break;
-        case 3:
-            $buffer = imagerotate($im, 180, 0);
-            break;
-        case 6:
-            $buffer = imagerotate($im, -90, 0);
-            break;
-        case 5: // vertical flip + 90 rotate right
-            $buffer = imagerotate($im, -90, 0);
-            break;
-        case 7: // horizontal flip + 90 rotate right
-            $buffer = imagerotate($im, -90, 0);
-            break;
-    }
-    $im = $buffer;
-    imagedestroy($buffer);
-}
-$width = imagesx($im);
-$height = imagesy($im);
+list($width, $height, $type, $attr) = getimagesize($fullpath);
 $crwidth = intval($width * 0.25);
 $copyright = imagecreatefrompng('./img/copyright.png');
 $stamp = imagescale($copyright,$crwidth);
-
+$im = imagecreatefromstring(file_get_contents($fullpath));
 $marge_right = 10;
 $marge_bottom = 10;
 $sx = imagesx($stamp);

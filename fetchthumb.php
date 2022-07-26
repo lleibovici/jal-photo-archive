@@ -2,7 +2,7 @@
 require_once('config.php');
 $filename = $_REQUEST['filename'];
 $filename = str_replace('&amp;','&',$filename);
-error_log($filename);
+//error_log($filename);
 $album = $_REQUEST['album'];
 $fullpath = $picturebase . $album . '/thumbs/' .$filename;
 

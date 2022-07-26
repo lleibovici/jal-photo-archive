@@ -52,7 +52,7 @@ if(isset($_POST['submit_image']))
         //error_log("Uploadfile->" . $uploadfile);
         $thumbname = $folder . 'thumbs/' . $filename;
         if (! move_uploaded_file($_FILES["upload_file"]["tmp_name"][$i], $uploadfile)) {
-            error_log('Filed to move uploaded file '. $uploadfile);
+            error_log('Failed to move uploaded file '. $uploadfile);
         }
         $cmdstr = "/usr/bin/convert \"$uploadfile\" -resize 250x180 -background white -gravity center -extent 250x180 \"$thumbname\"";
         //error_log($cmdstr);
@@ -60,11 +60,9 @@ if(isset($_POST['submit_image']))
         $filetime = date('Y-m-d H:i:s', filemtime($uploadfile));
         $so ++;
         $sql = "INSERT INTO pictures VALUES (NULL,?,?,?,?,'','','',?)";
-        //$sql = "INSERT INTO pictures VALUES (NULL,'$album','$filename','$filetime','','','',$so)";
-        error_log($sql);
+        //error_log($sql);
         $q1 = $dbh->prepare($sql);
         $q1->execute([$album,$albumid,$filename,$filetime,$so]);
-        //$q1->execute();
     }
     exit();
 }

@@ -125,6 +125,7 @@
                 // $('#sumernote').summernote("code", description);
                 $('#sumernote_en').summernote("code", description_en);
                 var thumblink = "/fetchthumb.php?album=" + album + "&filename=" + filename;
+                // var fulllink = "fetchpicraw.php?album=" + album + "&filename=" + filename;
                 var fulllink = "fetchpicraw.php?album=" + album + "&filename=" + filename;
                 $('#thumbnail').html('<a href="' + fulllink + '" download="' + filename + '"><img src="' + thumblink + '"></a>')
 

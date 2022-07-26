@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ae28a90a-c3e7-493c-8d02-45b31c68bbc7" name="jal-archive.leibovici.uk" url="http://jal-archive.leibovici.uk">
+        <fileTransfer rootFolder="/home/jal/public-html" accessType="SFTP" host="jal-archive.leibovici.uk" port="22" sshConfigId="6031e757-1c19-46b6-be5e-9ed4a76929c1" sshConfig="jal@jal-archive.leibovici.uk:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
