@@ -3,7 +3,7 @@ require_once('config.php');
 
 $albumname = "";
 $album = [];
-$dbh = new PDO("mysql:host=$dbhost;dbname=$database","$dbuser","$dbpassword");
+$dbh = new PDO("mysql:host=$dbhost;dbname=$database", "$dbuser", "$dbpassword");
 
 $sql = "";
 if (isset($_REQUEST['album'])) {
@@ -40,26 +40,32 @@ $sth0 = $dbh->prepare($sql);
 $sth0->execute();
 $row = $sth0->fetch();
 $cnt = $row[0];
+if ($cnt > 0) {
+    $album['parent'] = true;
+} else {
+    $album['parent'] = false;
+}
 
 $ret = [];
-if ($cnt == 0) {
+/*if ($cnt == 0) {*/
 
-    $sql = 'SELECT * FROM pictures WHERE albumid = ? ORDER BY sortorder,modified';
+$sql = 'SELECT * FROM pictures WHERE albumid = ? ORDER BY sortorder,modified';
 //error_log($sql);
-    $sth = $dbh->prepare($sql);
-    $sth->execute([$albumid]);
-    $pictures = array();
-    while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-        array_push($pictures, $row);
-    }
-//$sth->finish();
-    $album['parent'] = false;
-    array_push($ret, $album);
-    array_push($ret, $pictures);
+$sth = $dbh->prepare($sql);
+$sth->execute([$albumid]);
+$pictures = array();
+while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+    array_push($pictures, $row);
 }
+
+//$album['parent'] = false;
+array_push($ret, $album);
+array_push($ret, $pictures);
+/*}
 else {
     $album['parent'] = true;
     array_push($ret, $album);
-}
+}*/
+
 header('Content-type: application/json');
 echo json_encode($ret);

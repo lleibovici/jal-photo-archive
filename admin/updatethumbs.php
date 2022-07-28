@@ -19,7 +19,7 @@ if (isset($_REQUEST['album'])) {
             error_log($cmdstr . 'failed');
         }
         else {
-            array_push($files,$filename);
+            $files[] = $filename;
         }
    }
     header('Content-type: application/json');

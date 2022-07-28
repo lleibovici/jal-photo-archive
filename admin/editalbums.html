@@ -55,6 +55,7 @@
             <option>Select an album</option>
         </select>
         <span id="selectParent" class="float-right">
+            <label for="selectParent">Parent Album:</label>
             <select id="parentList">
                 <option value="0">No Parent</option>
             </select>
@@ -78,21 +79,22 @@
                     </div>
                     <div>
                         <button type="button" onclick="registrer_en();">Submit description</button>
-                        <!--<div class="float-right mr-2">English album name <input type="text" id="name_en">
+                        <div class="float-right mr-2">English album name <input type="text" id="name_en">
                             <button type="button" onclick="reg_en_name();">Update name</button>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row" style="background-color: black; color: white">
                 <div class="col-1">&nbsp;</div>
                 <div class="col-3">&nbsp;</div>
-                <div class="col-4">Description (Fr)</div>
-                <div class="col-4">Description (En)</div>
+<!--                <div class="col-4">Description (Fr)</div>-->
+                <div class="col-8 text-center">Description (En)</div>
             </div>
             <ul id="picturelist" class="list-group">
             </ul>
             <button type="button" onclick="saveSort();">Save Sort Order</button>
+            <button class="btn btn-secondary float-right" type="button" onclick="window.location.reload();">Cancel</button>
         </div>
     </div>
 </main>
@@ -183,7 +185,7 @@
                 ],
             }
         );
-        $('#sumernote').on('summernote.change', function(){fr_changed = true;});
+        // $('#sumernote').on('summernote.change', function(){fr_changed = true;});
         $('#sumernote_en').on('summernote.change', function(){en_changed = true;});
 
 
@@ -228,7 +230,7 @@
                         var name_en = data[0]['name_en'];
                         fillparentlist(data[0]['parentid']);
                         $('#name_en').val(name_en);
-                        $('#sumernote').summernote("code", descr);
+                        // $('#sumernote').summernote("code", descr);
                         fr_changed = false;
                         $('#sumernote_en').summernote("code", descr_en);
                         en_changed = false;
@@ -260,9 +262,13 @@
                             var pidx = value['id'];
                             var sortorder = value['sortorder'];
                             var html = "<div class='col-1'><a href='editpicture.html?pictureidx=" + pidx + "'><i class=\"fas fa-edit fa-3x\"></i></a></div> ";
-                            var html1 = "<div class='col-3'><span class='my-handle'><img height='90px' width='125px' src=\"" + thumb + "\"></span></div>";
+                            var html1 = "<div class='col-3'><span class='my-handle'><img height='90px' width='125px' src=\"" + thumb + "\"></span><br/>" + filename + "</div>";
+/*
                             var html2 = "<div class='col-4'>" + description + "</div>";
                             var html3 = "<div class='col-4'>" + description_en + "</div>";
+*/
+                            var html2 = "";
+                            var html3 = "<div class='col-8'>" + description_en + "</div>";
                             $('#picturelist').append("<li id='" + pidx + "' class='list-group-item'><div class='row'>" + html + html1 + html2 + html3 + "</div></li>");
                         });
                         var el = document.getElementById('picturelist');
@@ -289,7 +295,7 @@
         });
     });
 
-    function registrer() {
+    /*function registrer() {
         var data = $('#sumernote').summernote('code');
         var selectedAlbum = $('#albumlist').find(':selected').text();
         $.post('writealbumDesc.php', {data: data, album: selectedAlbum})
@@ -297,7 +303,7 @@
                 alert('mise à jour')
                 fr_changed = false;
             });
-    };
+    };*/
 
     function registrer_en() {
         var data = $('#sumernote_en').summernote('code');

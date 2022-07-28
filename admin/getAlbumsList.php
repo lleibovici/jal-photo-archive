@@ -6,7 +6,8 @@ if (isset($_SESSION['loggedin'])) {
 }
 require_once('../config.php');
 $dbh = new PDO("mysql:host=$dbhost;dbname=$database","$dbuser","$dbpassword");
-$sql = 'SELECT albums.id, albums.album, albums.private, albums.description, albums.description_en, albums.name_en, albums.parent FROM albums WHERE albums.albumtype = 0 ORDER BY albums.parent, albums.sortorder';
+//$sql = 'SELECT albums.id, albums.album, albums.private, albums.description, albums.description_en, albums.name_en, albums.parent FROM albums WHERE albums.albumtype = 0 ORDER BY albums.parent, albums.sortorder';
+$sql = 'SELECT albums.id, albums.album, albums.private, albums.description, albums.description_en, albums.name_en, albums.parent FROM albums WHERE albums.albumtype = 0 ORDER BY albums.album';
 $sth = $dbh->query($sql);
 
 $albumArray = [];

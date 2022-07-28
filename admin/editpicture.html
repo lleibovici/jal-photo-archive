@@ -126,8 +126,8 @@
                 $('#sumernote_en').summernote("code", description_en);
                 var thumblink = "/fetchthumb.php?album=" + album + "&filename=" + filename;
                 // var fulllink = "fetchpicraw.php?album=" + album + "&filename=" + filename;
-                var fulllink = "fetchpicraw.php?album=" + album + "&filename=" + filename;
-                $('#thumbnail').html('<a href="' + fulllink + '" download="' + filename + '"><img src="' + thumblink + '"></a>')
+                var fulllink = "downloadoriginal.php?album=" + album + "&filename=" + filename;
+                $('#thumbnail').html('<a href="' + fulllink + '" download="' + filename + '"><img src="' + thumblink + '"></a><br/><span class="font-italic">Click on picture to download original</span>')
 
             }
         });
