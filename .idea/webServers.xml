@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="ae28a90a-c3e7-493c-8d02-45b31c68bbc7" name="jal-archive.leibovici.uk" url="http://jal-archive.leibovici.uk">
-        <fileTransfer rootFolder="/home/jal/public-html" accessType="SFTP" host="jal-archive.leibovici.uk" port="22" sshConfigId="6031e757-1c19-46b6-be5e-9ed4a76929c1" sshConfig="jal@jal-archive.leibovici.uk:22 password">
+      <webServer id="ae28a90a-c3e7-493c-8d02-45b31c68bbc7" name="jal-archive.leibovici.uk" url="http://rscpictures.johnleonard.co.uk">
+        <fileTransfer rootFolder="/home/jal/public-html" accessType="SFTP" host="rscpictures.johnleonard.co.uk" port="22" sshConfigId="78a17c34-56b4-4743-b747-7c95ce0923f6" sshConfig="jal@rscpictures.johnleonard.co.uk:22 key" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
           </advancedOptions>
