@@ -5,3 +5,4 @@ $dbuser = 'pictures';
 $dbpassword = 'Password01!';
 
 $picturebase = '/home/jal/data/';
+$watermark = '© 2024 John Leonard';
